@@ -22,7 +22,7 @@ These projects reflect hands-on experience in building **functional, responsive,
 
 The deployed portfolio is available online:
 
-[View Deployed Portfolio]()
+[View Deployed Portfolio](https://ubong-alt.github.io/Web-deployment/)
 
 From the homepage, you can navigate to each individual project directly.
 
