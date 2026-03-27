@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab 7 – JavaScript Events</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=DM+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2e3248;
+    --accent: #7c6aff;
+    --green: #3ddc97;
+    --red: #ff6b6b;
+    --yellow: #ffd166;
+    --text: #dde1f0;
+    --muted: #636880;
+    --radius: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* REG TAG */
+  .reg-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 999px;
+    margin: 16px 0 0 20px;
+    letter-spacing: 0.08em;
+  }
+
+  /* HEADER */
+  header {
+    padding: 36px 40px 28px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  header h1 span { color: var(--accent); }
+
+  /* MAIN */
+  main {
+    max-width: 860px;
+    margin: 36px auto;
+    padding: 0 24px;
+    display: grid;
+    gap: 24px;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 26px 30px;
+  }
+
+  .card-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+
+  /* HOVER BOX */
+  #hoverBox {
+    width: 100%;
+    padding: 28px;
+    background: var(--surface2);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    text-align: center;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.25s, border-color 0.25s, transform 0.15s;
+    margin-bottom: 12px;
+    user-select: none;
+  }
+
+  #hoverBox:hover {
+    background: rgba(124,106,255,0.12);
+    border-color: var(--accent);
+    transform: scale(1.01);
+  }
+
+  #hoverBox.clicked {
+    background: rgba(61,220,151,0.12);
+    border-color: var(--green);
+  }
+
+  #hoverOutput {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--green);
+    min-height: 20px;
+  }
+
+  /* COUNTER */
+  .counter-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  #counterValue {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 60px;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .counter-btns { display: flex; gap: 10px; }
+
+  /* FORM */
+  #emailForm {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
+  input[type="text"] {
+    flex: 1;
+    min-width: 180px;
+    padding: 10px 16px;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  input[type="text"]:focus { border-color: var(--accent); }
+
+  #formMessage {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    min-height: 20px;
+  }
+
+  #formMessage.ok  { color: var(--green); }
+  #formMessage.err { color: var(--red); }
+
+  /* PREVENT DEFAULT */
+  #demoLink {
+    display: inline-block;
+    padding: 10px 22px;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--yellow);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  #demoLink:hover {
+    border-color: var(--yellow);
+    background: rgba(255,209,102,0.08);
+  }
+
+  #linkMsg {
+    margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--yellow);
+    min-height: 20px;
+  }
+
+  /* TIMER */
+  #timerText {
+    font-size: 1rem;
+    color: var(--muted);
+    transition: color 0.5s;
+    margin-bottom: 14px;
+  }
+
+  #timerText.active { color: var(--green); }
+
+  #timerBar {
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+
+  #timerFill {
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    border-radius: 999px;
+    transition: width 0.1s linear;
+  }
+
+  /* BUTTONS */
+  button {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.82rem;
+    padding: 10px 22px;
+    border-radius: var(--radius);
+    border: none;
+    cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.12s;
+  }
+
+  button:active { transform: scale(0.96); }
+
+  .btn-primary  { background: var(--accent); color: #fff; }
+  .btn-primary:hover { box-shadow: 0 4px 18px rgba(124,106,255,0.4); }
+
+  .btn-danger   { background: var(--red); color: #fff; }
+  .btn-danger:hover { box-shadow: 0 4px 18px rgba(255,107,107,0.4); }
+
+  .btn-outline  { background: transparent; color: var(--text); border: 1.5px solid var(--border); }
+  .btn-outline:hover { border-color: var(--text); }
+
+  /* FOOTER */
+  footer {
+    margin-top: 48px;
+    border-top: 1px solid var(--border);
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<!-- Registration Number -->
+<p class="reg-number">Reg-No: 22/EG/CO/1680</p>
+
+<header>
+  <h1>JavaScript <span>Events</span></h1>
+</header>
+
+<main>
+
+  <!-- 1. Mouseover & Click -->
+  <div class="card">
+    <p class="card-label">01 — Mouseover &amp; Click Event</p>
+    <div id="hoverBox">Hover or Click Me</div>
+    <p id="hoverOutput"></p>
+  </div>
+
+  <!-- 2. Counter -->
+  <div class="card">
+    <p class="card-label">02 — Counter</p>
+    <div class="counter-row">
+      <span id="counterValue">0</span>
+      <div class="counter-btns">
+        <button class="btn-primary" id="increaseBtn">+ Increase</button>
+        <button class="btn-danger"  id="decreaseBtn">− Decrease</button>
+        <button class="btn-outline" id="resetBtn">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Form Validation -->
+  <div class="card">
+    <p class="card-label">03 — Form Validation</p>
+    <form id="emailForm">
+      <input type="text" id="emailInput" placeholder="Enter your email">
+      <button class="btn-primary" type="submit">Submit</button>
+    </form>
+    <p id="formMessage"></p>
+  </div>
+
+  <!-- 4. Prevent Default -->
+  <div class="card">
+    <p class="card-label">04 — Prevent Default</p>
+    <a href="https://example.com" id="demoLink">Go to Example.com</a>
+    <p id="linkMsg"></p>
+  </div>
+
+  <!-- 5. Timer -->
+  <div class="card">
+    <p class="card-label">05 — Timer</p>
+    <p id="timerText">Press Start — countdown begins at 5 seconds.</p>
+    <div id="timerBar"><div id="timerFill"></div></div>
+    <button class="btn-primary" id="startTimer">Start Timer</button>
+  </div>
+
+</main>
+
+<footer>
+  <span>© 2026 Lab 7</span>
+  <span>JavaScript Events — 22/EG/CO/1680</span>
+</footer>
+
+<script src="lab7.js"></script>
+</body>
+</html>

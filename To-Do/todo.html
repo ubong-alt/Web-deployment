@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>To-Do List – 22/EG/CO/1680</title>
+<link rel="stylesheet" href="todo.css">
+</head>
+<body>
+
+<div class="top">
+  <p class="reg-tag">Reg-No: 22/EG/CO/1680</p>
+  <h1>My Task<span>.</span><br>Manager</h1>
+  <p>Stay organized — add, complete, and clear tasks.</p>
+</div>
+
+<div class="container">
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat">
+      <div class="num" id="totalCount">0</div>
+      <div class="lbl">Total</div>
+    </div>
+    <div class="stat">
+      <div class="num accent" id="pendingCount">0</div>
+      <div class="lbl">Pending</div>
+    </div>
+    <div class="stat">
+      <div class="num green" id="doneCount">0</div>
+      <div class="lbl">Done</div>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="input-section">
+    <input type="text" id="taskInput" placeholder="What needs to be done?">
+    <button id="addBtn">+ Add Task</button>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="pending">Pending</button>
+    <button class="filter-btn" data-filter="completed">Completed</button>
+  </div>
+
+  <!-- List -->
+  <ul id="taskList"></ul>
+
+  <!-- Footer -->
+  <div class="card-footer">
+    <span>© 2026 — 22/EG/CO/1680</span>
+    <button id="clearDoneBtn">Clear completed</button>
+  </div>
+
+</div>
+
+<script src="todo.js"></script>
+</body>
+</html>
