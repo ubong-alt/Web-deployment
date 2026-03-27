@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab 5 – JavaScript Basics</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --border: #2a2a3a;
+    --accent: #00e5ff;
+    --accent2: #ff4d6d;
+    --text: #e8e8f0;
+    --muted: #6b6b88;
+    --radius: 6px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    padding: 0 0 60px 0;
+  }
+
+  /* ── REG NUMBER ── */
+  .reg-tag {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    background: rgba(0,229,255,0.07);
+    border: 1px solid rgba(0,229,255,0.25);
+    padding: 5px 14px;
+    border-radius: 999px;
+    margin: 18px 0 0 24px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    padding: 48px 40px 32px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 260px; height: 260px;
+    background: radial-gradient(circle, rgba(0,229,255,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  header h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  header h1 span {
+    color: var(--accent);
+  }
+
+  header p {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 500px;
+    line-height: 1.6;
+  }
+
+  /* ── MAIN LAYOUT ── */
+  main {
+    max-width: 900px;
+    margin: 48px auto 0;
+    padding: 0 24px;
+    display: grid;
+    gap: 32px;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+  }
+
+  .card h2 {
+    font-size: 0.7rem;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+
+  /* ── STUDENT DETAILS ── */
+  #studentInfo {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  #studentInfo li {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+  }
+
+  #studentInfo li .label {
+    font-size: 0.68rem;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  #studentInfo li .value {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  /* ── ACTIONS ── */
+  .btn-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  button {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    padding: 12px 24px;
+    border-radius: var(--radius);
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+
+  button:active { transform: scale(0.97); }
+
+  #sumBtn {
+    background: var(--accent);
+    color: #000;
+    font-weight: 700;
+  }
+
+  #sumBtn:hover { box-shadow: 0 0 18px rgba(0,229,255,0.45); }
+
+  #evenOddBtn {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+
+  #evenOddBtn:hover { background: rgba(0,229,255,0.08); }
+
+  #showFruitsBtn {
+    background: transparent;
+    color: var(--accent2);
+    border: 1px solid var(--accent2);
+  }
+
+  #showFruitsBtn:hover { background: rgba(255,77,109,0.08); }
+
+  /* ── RESULTS ── */
+  #resultList {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 40px;
+  }
+
+  #resultList li {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    padding: 12px 18px;
+    background: var(--bg);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    animation: slideIn 0.25s ease;
+  }
+
+  #resultList li.fruit {
+    border-left-color: var(--accent2);
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-8px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  #resultList:empty::after {
+    content: 'Results will appear here…';
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    padding: 8px 0;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    margin-top: 60px;
+    border-top: 1px solid var(--border);
+    padding: 24px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+
+  footer span { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<!-- Registration Number -->
+<p class="reg-tag">Reg-No:  22/EG/CO/1680</p>
+
+<header>
+  <h1>JavaScript <span>Basics</span></h1>
+  <p>Demonstrating variables, functions, loops, conditionals, and user interaction through a clean interactive interface.</p>
+</header>
+
+<main>
+
+  <div class="card">
+    <h2>// Student Details</h2>
+    <ul id="studentInfo"></ul>
+  </div>
+
+  <div class="card">
+    <h2>// Actions</h2>
+    <div class="btn-grid">
+      <button id="sumBtn">Sum Two Numbers</button>
+      <button id="evenOddBtn">Check Even or Odd</button>
+      <button id="showFruitsBtn">Display Fruits</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>// Results</h2>
+    <ul id="resultList"></ul>
+  </div>
+
+</main>
+
+<footer>
+  <span>© 2026 Lab 5</span>
+  <span>JavaScript Basics — 22/EG/CO/1680</span>
+</footer>
+
+<script src="lab5.js"></script>
+</body>
+</html>

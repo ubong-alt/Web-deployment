@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Portal</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #0f172a, #1e3a8a);
+            color: #e5e7eb;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #93c5fd;
+        }
+
+        .reg-number {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #facc15;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #1f2937;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        input[type="radio"], input[type="checkbox"] {
+            width: auto;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2563eb;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #374151;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #3b82f6;
+        }
+
+        img {
+            width: 120px;
+            border-radius: 50%;
+            display: block;
+            margin: 0 auto 10px;
+        }
+    </style>
+</head>
+<body>
+
+<p class="reg-number">Registration Number: 22/EG/CO/1680</p>
+
+<header>
+    <h1>Student Registration Dashboard</h1>
+</header>
+
+<div class="container">
+
+    <!-- Profile Section (Lecturer Requirement Adapted) -->
+    <div class="card">
+        <h2>Student Profile</h2>
+        <img src="https://via.placeholder.com/150" alt="Profile Picture">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Department</th>
+            </tr>
+            <tr>
+                <td>Sample Student</td>
+                <td>20</td>
+                <td>Software Engineering</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Form Section -->
+    <div class="card">
+        <h2>Register New Student</h2>
+        <form id="studentForm">
+
+            <label>Full Name</label>
+            <input type="text" id="name" required>
+
+            <label>Age</label>
+            <input type="number" id="age" required>
+
+            <label>Gender</label>
+            <input type="radio" name="gender" value="Male" required> Male
+            <input type="radio" name="gender" value="Female"> Female
+
+            <label>Comments</label>
+            <textarea id="comments"></textarea>
+
+            <label>
+                <input type="checkbox" id="newsletter"> Subscribe to updates
+            </label>
+
+            <button type="submit">Add Student</button>
+        </form>
+    </div>
+
+</div>
+
+<!-- Table Section -->
+<div class="card" style="margin-top:20px;">
+    <h2>Registered Students</h2>
+
+    <table id="studentTable">
+        <thead>
+            <tr>
+                <th>SN</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Comments</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script>
+    const form = document.getElementById('studentForm');
+    const tableBody = document.querySelector('#studentTable tbody');
+    let serialNumber = 1;
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const name = document.getElementById('name').value;
+        const age = document.getElementById('age').value;
+        const gender = document.querySelector('input[name="gender"]:checked').value;
+        const comments = document.getElementById('comments').value;
+
+        const row = tableBody.insertRow();
+        row.innerHTML = `
+            <td>${serialNumber++}</td>
+            <td>${name}</td>
+            <td>${age}</td>
+            <td>${gender}</td>
+            <td>${comments}</td>
+        `;
+
+        form.reset();
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab 6 – DOM Manipulation</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Raleway:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f1eb;
+    --surface: #ffffff;
+    --ink: #1a1a2e;
+    --muted: #8a8a9a;
+    --accent: #e63946;
+    --accent2: #457b9d;
+    --border: #d8d4cc;
+    --radius: 8px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Raleway', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ── REG TAG ── */
+  .reg-number {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    border-bottom: 2px solid var(--accent);
+    display: inline-block;
+    padding: 6px 16px;
+    margin: 16px 0 0 20px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    padding: 40px 40px 30px;
+    border-bottom: 2px solid var(--ink);
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  header h1 {
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  header h1 em {
+    color: var(--accent);
+    font-style: normal;
+  }
+
+  header .sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  /* ── MAIN ── */
+  main {
+    max-width: 860px;
+    margin: 40px auto;
+    padding: 0 24px;
+    display: grid;
+    gap: 28px;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    position: relative;
+  }
+
+  .card-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  /* ── DEMO PARAGRAPH ── */
+  #demoParagraph {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    padding: 14px 18px;
+    border-left: 4px solid var(--accent2);
+    background: #f0f5f9;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin-bottom: 16px;
+    transition: color 0.4s, background 0.4s;
+  }
+
+  /* ── DYNAMIC LIST ── */
+  #taskList {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  #taskList li {
+    padding: 10px 16px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: pop 0.2s ease;
+  }
+
+  #taskList li::before {
+    content: '▸';
+    color: var(--accent);
+    font-size: 0.8rem;
+  }
+
+  @keyframes pop {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .input-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  input[type="text"] {
+    flex: 1;
+    min-width: 160px;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.9rem;
+    background: var(--bg);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  input[type="text"]:focus { border-color: var(--accent2); }
+
+  /* ── TOGGLE BOX ── */
+  .toggleBox {
+    padding: 20px;
+    background: linear-gradient(135deg, #457b9d22, #e6394622);
+    border: 1.5px dashed var(--accent2);
+    border-radius: var(--radius);
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-align: center;
+    margin-bottom: 16px;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+
+  .toggleBox.hidden {
+    opacity: 0;
+    transform: scaleY(0.85);
+    pointer-events: none;
+  }
+
+  /* ── FORM ── */
+  #nameForm {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+
+  #displayName {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent2);
+    min-height: 28px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.04em;
+    transition: opacity 0.3s;
+  }
+
+  /* ── BUTTONS ── */
+  button {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 0.05em;
+    padding: 10px 22px;
+    border-radius: var(--radius);
+    border: none;
+    cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.12s;
+  }
+
+  button:active { transform: scale(0.96); }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:hover { box-shadow: 0 4px 16px rgba(230,57,70,0.35); }
+
+  .btn-secondary {
+    background: var(--accent2);
+    color: #fff;
+  }
+  .btn-secondary:hover { box-shadow: 0 4px 16px rgba(69,123,157,0.35); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--ink);
+    border: 1.5px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--ink); }
+
+  /* ── FOOTER ── */
+  footer {
+    margin-top: 48px;
+    border-top: 2px solid var(--ink);
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<!-- Registration Number -->
+<p class="reg-number">Reg-No: 22/EG/CO/1680</p>
+
+<header>
+  <div>
+    <p class="sub">// lab-06</p>
+    <h1>DOM <em>Manipulation</em></h1>
+  </div>
+</header>
+
+<main>
+
+  <!-- Section 1: Change Text -->
+  <div class="card">
+    <p class="card-label">01 — Text Manipulation</p>
+    <p id="demoParagraph">This paragraph can be dynamically updated using JavaScript.</p>
+    <button class="btn-primary" id="changeTextBtn">Change Text &amp; Color</button>
+  </div>
+
+  <!-- Section 2: Dynamic List -->
+  <div class="card">
+    <p class="card-label">02 — Dynamic List</p>
+    <ul id="taskList">
+      <li>Complete Lab 1</li>
+      <li>Review Lab 2</li>
+    </ul>
+    <div class="input-row">
+      <input type="text" id="newItemInput" placeholder="Add a new task…">
+      <button class="btn-secondary" id="addItemBtn">Add Task</button>
+    </div>
+  </div>
+
+  <!-- Section 3: Toggle -->
+  <div class="card">
+    <p class="card-label">03 — Visibility Toggle</p>
+    <div class="toggleBox" id="toggleBox">This box can be toggled visible / hidden.</div>
+    <button class="btn-outline" id="toggleBtn">Toggle Box</button>
+  </div>
+
+  <!-- Section 4: Form + Display -->
+  <div class="card">
+    <p class="card-label">04 — Form Input &amp; Display</p>
+    <form id="nameForm">
+      <input type="text" id="nameInput" placeholder="Enter your name" required>
+      <button class="btn-primary" type="submit">Submit</button>
+    </form>
+    <div id="displayName"></div>
+  </div>
+
+</main>
+
+<footer>
+  <span>© 2026 Lab 6</span>
+  <span>DOM Manipulation — 22/EG/CO/1680</span>
+</footer>
+
+<script src="lab6.js"></script>
+</body>
+</html>
